@@ -1,5 +1,5 @@
 # DjangoTableSelectMultipleWidget
-A Django widget for use with a ModelMultipleChoiceField to allow easy jQuery DataTables sorting and pagination.
+A Django widget for use with a ModelMultipleChoiceField to allow easy jQuery DataTables sorting and pagination by rendering the selector as a table.
 
 Example form field:
 ```python
