@@ -18,9 +18,7 @@ Recommended Datatables Javascript to disallow sorting on the checkbox column:
 
 
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.css"></link>
-<script>
-
-
+"<script>
 $(document).ready(function(){
     $('#items').DataTable({
         "order": [],
@@ -30,7 +28,7 @@ $(document).ready(function(){
     }]
     });
 });
-</script>
+</script>"
 
 
 Modified from https://djangosnippets.org/snippets/518/ for use with Python 3, Django 1.7.
