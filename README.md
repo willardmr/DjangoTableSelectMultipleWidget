@@ -32,3 +32,6 @@ $(document).ready(function(){
 ```
 
 Modified from https://djangosnippets.org/snippets/518/ for use with Python 3, Django 1.7.
+
+
+Very similar to my TableSelect widget found here: https://github.com/willardmr/DjangoTableSelectWidget
