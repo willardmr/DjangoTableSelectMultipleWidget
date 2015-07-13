@@ -18,7 +18,12 @@ Recommended Datatables Javascript to disallow sorting on the checkbox column:
 src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js">
 </script>
 
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.css"></link><script>
+<link rel="stylesheet" type="text/css" 
+href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.css">
+</link>
+
+
+<script>
 $(document).ready(function(){
     $('#items').DataTable({
         "order": [],
