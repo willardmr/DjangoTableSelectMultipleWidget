@@ -2,11 +2,11 @@
 A Django widget for use with a ModelMultipleChoiceField to allow easy jQuery DataTables sorting and pagination.
 
 Example form field:
-
+```python
 items = forms.ModelMultipleChoiceField(
         queryset=myqueryset, widget=widgets.TableSelectMultiple(
         item_attrs=('tablecolum1', 'tablecolum2')))
-
+```
         
 Render it normally with a Django form.
 
@@ -26,6 +26,6 @@ $(document).ready(function(){
     });
 });
 </script>
-
+```
 
 Modified from https://djangosnippets.org/snippets/518/ for use with Python 3, Django 1.7.
