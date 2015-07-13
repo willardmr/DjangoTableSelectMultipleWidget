@@ -2,15 +2,25 @@
 A Django widget for use with a ModelMultipleChoiceField to allow easy jQuery DataTables sorting and pagination.
 
 Example form field:
+
 items = forms.ModelMultipleChoiceField(
         queryset=myqueryset, widget=widgets.TableSelectMultiple(
         item_attrs=('tablecolum1', 'tablecolum2')))
+
         
 Render it normally with a Django form.
+
+
 Recommended Datatables Javascript to disallow sorting on the checkbox column:
+
+
 <script src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+
+
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.css"></link>
 <script>
+
+
 $(document).ready(function(){
     $('#items').DataTable({
         "order": [],
@@ -21,4 +31,6 @@ $(document).ready(function(){
     });
 });
 </script>
+
+
 Modified from https://djangosnippets.org/snippets/518/ for use with Python 3, Django 1.7.
