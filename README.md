@@ -5,7 +5,7 @@ Example form field:
 ```python
 items = forms.ModelMultipleChoiceField(
         queryset=myqueryset, widget=widgets.TableSelectMultiple(
-        item_attrs=('tablecolum1', 'tablecolum2')))
+        item_attrs=('tablecolumn1', 'tablecolumn2')))
 ```
         
 Render it normally with a Django form.
@@ -14,14 +14,9 @@ Render it normally with a Django form.
 Recommended Datatables Javascript to disallow sorting on the checkbox column:
 
 ```javascript
-<script 
-src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js">
-</script>
+<script src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
 
-<link rel="stylesheet" type="text/css" 
-href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.css">
-</link>
-
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.css"></link>
 
 <script>
 $(document).ready(function(){
