@@ -1,8 +1,15 @@
 # DjangoTableSelectMultipleWidget
 A Django widget for use with a ModelMultipleChoiceField to allow easy jQuery DataTables sorting and pagination by rendering the selector as a table.
 
+## Installation
+
+```bash
+pip install django-table-select-widget
+```
+
 Example form field:
 ```python
+from table_select_widget import TableSelectMultiple
 items = forms.ModelMultipleChoiceField(
         queryset=myqueryset, widget=widgets.TableSelectMultiple(
         item_attrs=[
