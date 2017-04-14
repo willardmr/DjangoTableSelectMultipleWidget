@@ -57,15 +57,15 @@ class TableSelectMultiple(SelectMultiple):
         has_id = attrs and 'id' in attrs
         final_attrs = self.build_attrs(attrs, name=name)
         str_values = set([force_text(v) for v in value])
-        for i, (pk, item) in enumerate(self.choices):
+        choice_pks = [pk for (pk, item) in self.choices]
+        for i, item in enumerate(self.choices.queryset.filter(pk__in=choice_pks)):
             # If an ID attribute was given, add a numeric index as a suffix,
             # so that the checkboxes don't all have the same ID attribute.
             if has_id:
                 final_attrs = dict(final_attrs, id='{}_{}'.format(attrs['id'], i))
-            item = self.choices.queryset.get(pk=pk)
             cb = CheckboxInput(final_attrs,
                                check_test=lambda value: value in str_values)
-            option_value = force_text(pk)
+            option_value = force_text(item.pk)
             rendered_cb = cb.render(name, option_value)
             output.append('<tr><td>{}</td>'.format(rendered_cb))
             for attr in self.item_attrs:
