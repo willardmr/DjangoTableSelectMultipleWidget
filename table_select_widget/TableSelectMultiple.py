@@ -48,7 +48,8 @@ class TableSelectMultiple(SelectMultiple):
         output = []
         output.append('<thead><tr><th class="no-sort"></th>')
         for item in self.item_attrs:
-            output.append('<th>{}</th>'.format(clean_underscores(escape(item))))
+            name = item if isinstance(item, str) else item[1]
+            output.append('<th>{}</th>'.format(clean_underscores(escape(name))))
         output.append('</tr></thead>')
         return ''.join(output)
 
@@ -68,7 +69,8 @@ class TableSelectMultiple(SelectMultiple):
             option_value = force_text(item.pk)
             rendered_cb = cb.render(name, option_value)
             output.append('<tr><td>{}</td>'.format(rendered_cb))
-            for attr in self.item_attrs:
+            for item_attr in self.item_attrs:
+                attr = item_attr if isinstance(item_attr, str) else item_attr[0]
                 if callable(attr):
                     content = attr(item)
                 elif callable(getattr(item, attr)):

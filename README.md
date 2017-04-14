@@ -5,7 +5,10 @@ Example form field:
 ```python
 items = forms.ModelMultipleChoiceField(
         queryset=myqueryset, widget=widgets.TableSelectMultiple(
-        item_attrs=['tablecolumn1', 'tablecolumn2']))
+        item_attrs=[
+            'tablecolumn1',
+            ('tablecolumn2', "Table coulumn 2 header"),
+        ]))
 ```
         
 Render it normally with a Django form.
