@@ -18,6 +18,7 @@ items = forms.ModelMultipleChoiceField(
         ],
         enable_shift_select=True,
         enable_datatables=True,
+        bootstrap_style=True,
         ))
 ```
         
@@ -39,6 +40,13 @@ If `True`, it inserts JavaScripts, that enables DataTables for the select table.
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.css"></link>
 </script>
 ```
+
+#### `bootstrap_style`
+Default: `False`
+
+If `True`, it inserts BootStrap classes to the table.
+
+## Origin
 
 Modified from https://djangosnippets.org/snippets/518/ for use with Python 3, Django 1.7.
 

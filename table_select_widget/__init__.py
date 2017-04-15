@@ -57,7 +57,7 @@ class TableSelectMultiple(SelectMultiple):
     checkbox.
     Only for use with a ModelMultipleChoiceField
     """
-    def __init__(self, item_attrs, enable_shift_select=False, enable_datatables=False, *args, **kwargs):
+    def __init__(self, item_attrs, enable_shift_select=False, enable_datatables=False, bootstrap_style=False, *args, **kwargs):
         """
         item_attrs
             Defines the attributes of each item which will be displayed
@@ -75,13 +75,17 @@ class TableSelectMultiple(SelectMultiple):
         self.item_attrs = item_attrs
         self.enable_shift_select = enable_shift_select
         self.enable_datatables = enable_datatables
+        self.bootstrap_style = bootstrap_style
 
     def render(self, name, value,
                attrs=None, choices=()):
         if value is None:
             value = []
         output = []
-        output.append('<table id={} class="display">'.format(escape(name)))
+        table_classes = "display"
+        if self.bootstrap_style:
+            table_classes += " table table-sm table-bordered"
+        output.append('<table id={} class="{}">'.format(escape(name), table_classes))
         head = self.render_head()
         output.append(head)
         body = self.render_body(name, value, attrs)
@@ -108,6 +112,9 @@ class TableSelectMultiple(SelectMultiple):
         output = []
         has_id = attrs and 'id' in attrs
         final_attrs = self.build_attrs(attrs, name=name)
+        final_attrs['class'] = "tableselectmultiple selectable-checkbox"
+        if self.bootstrap_style:
+            final_attrs['class'] += " form-check-input"
         str_values = set([force_text(v) for v in value])
         choice_pks = [pk for (pk, item) in self.choices]
         for i, item in enumerate(self.choices.queryset.filter(pk__in=choice_pks)):
@@ -115,7 +122,6 @@ class TableSelectMultiple(SelectMultiple):
             # so that the checkboxes don't all have the same ID attribute.
             if has_id:
                 final_attrs = dict(final_attrs, id='{}_{}'.format(attrs['id'], i))
-            final_attrs['class'] += " selectable-checkbox"
             cb = CheckboxInput(final_attrs,
                                check_test=lambda value: value in str_values)
             option_value = force_text(item.pk)
