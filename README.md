@@ -17,6 +17,7 @@ items = forms.ModelMultipleChoiceField(
             ('tablecolumn2', "Table coulumn 2 header"),
         ],
         enable_shift_select=True,
+        enable_datatables=True,
         ))
 ```
         
@@ -29,24 +30,13 @@ Default: `False`
 
 If `True`, it inserts JavaScripts, that enables shift-selection of multiple checkboxes. JQuery is required to be activated for this feature.
 
+#### `enable_datatables`
+Default: `False`
 
-Recommended Datatables Javascript to disallow sorting on the checkbox column:
-
+If `True`, it inserts JavaScripts, that enables DataTables for the select table. JQuery and DataTables is required to be activated for this feature:
 ```javascript
 <script src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
-
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.css"></link>
-
-<script>
-$(document).ready(function(){
-    $('#items').DataTable({
-        "order": [],
-        "columnDefs": [{
-        "targets"  : 'no-sort',
-        "orderable" : false,
-    }]
-    });
-});
 </script>
 ```
 

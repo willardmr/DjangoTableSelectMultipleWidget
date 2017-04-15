@@ -35,6 +35,20 @@ $.fn.shiftClick = function () {
 $('.selectable-checkbox').shiftClick();
 '''
 
+DATATABLES_JS = '''
+$(document).ready(function(){
+    $('#paing_for').DataTable({
+        "order": [],
+        "paging": false, // Paging cannot be easily turned on, because otherwise the checkboxes on unvisible pages are not in the request.
+        "searching": false,
+        "columnDefs": [{
+            "targets"  : 'no-sort',
+            "orderable" : false,
+        }]
+    });
+});
+'''
+
 
 class TableSelectMultiple(SelectMultiple):
     """
@@ -43,7 +57,7 @@ class TableSelectMultiple(SelectMultiple):
     checkbox.
     Only for use with a ModelMultipleChoiceField
     """
-    def __init__(self, item_attrs, enable_shift_select=False, *args, **kwargs):
+    def __init__(self, item_attrs, enable_shift_select=False, enable_datatables=False, *args, **kwargs):
         """
         item_attrs
             Defines the attributes of each item which will be displayed
@@ -60,6 +74,7 @@ class TableSelectMultiple(SelectMultiple):
         super(TableSelectMultiple, self).__init__(*args, **kwargs)
         self.item_attrs = item_attrs
         self.enable_shift_select = enable_shift_select
+        self.enable_datatables = enable_datatables
 
     def render(self, name, value,
                attrs=None, choices=()):
@@ -75,6 +90,8 @@ class TableSelectMultiple(SelectMultiple):
         output.append('<script>')
         if self.enable_shift_select:
             output.append(SHIFT_SELECT_JS)
+        if self.enable_datatables:
+            output.append(DATATABLES_JS)
         output.append('</script>')
         return mark_safe('\n'.join(output))
 
