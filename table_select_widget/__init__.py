@@ -7,6 +7,35 @@ from datetime import datetime
 from django.utils import timezone
 
 
+SHIFT_SELECT_JS = '''
+$.fn.shiftClick = function () {
+    var lastSelected; // Firefox error: LastSelected is undefined
+    this.each(function () {
+        $(this).click(function (event) {
+            if (event.shiftKey) {
+                var checkBoxes = $(".selectable-checkbox");
+                var last = checkBoxes.index(lastSelected);
+                var first = checkBoxes.index(this);
+                var start = Math.min(first, last);
+                var end = Math.max(first, last);
+                var chk = lastSelected.checked;
+                for (var i = start; i <= end; i++) {
+                    checkBoxes[i].checked = chk;
+                    $(checkBoxes[i].closest("tr")).toggleClass('active', chk);
+                }
+            } else {
+                lastSelected = this;
+            }
+            $(this).closest("tr").toggleClass(
+                'active', $(this).is(":checked")
+            );
+        })
+    });
+};
+$('.selectable-checkbox').shiftClick();
+'''
+
+
 class TableSelectMultiple(SelectMultiple):
     """
     Provides selection of items via checkboxes, with a table row
@@ -14,7 +43,7 @@ class TableSelectMultiple(SelectMultiple):
     checkbox.
     Only for use with a ModelMultipleChoiceField
     """
-    def __init__(self, item_attrs, *args, **kwargs):
+    def __init__(self, item_attrs, enable_shift_select=False, *args, **kwargs):
         """
         item_attrs
             Defines the attributes of each item which will be displayed
@@ -30,6 +59,7 @@ class TableSelectMultiple(SelectMultiple):
         """
         super(TableSelectMultiple, self).__init__(*args, **kwargs)
         self.item_attrs = item_attrs
+        self.enable_shift_select = enable_shift_select
 
     def render(self, name, value,
                attrs=None, choices=()):
@@ -42,6 +72,10 @@ class TableSelectMultiple(SelectMultiple):
         body = self.render_body(name, value, attrs)
         output.append(body)
         output.append('</table>')
+        output.append('<script>')
+        if self.enable_shift_select:
+            output.append(SHIFT_SELECT_JS)
+        output.append('</script>')
         return mark_safe('\n'.join(output))
 
     def render_head(self):
@@ -64,6 +98,7 @@ class TableSelectMultiple(SelectMultiple):
             # so that the checkboxes don't all have the same ID attribute.
             if has_id:
                 final_attrs = dict(final_attrs, id='{}_{}'.format(attrs['id'], i))
+            final_attrs['class'] += " selectable-checkbox"
             cb = CheckboxInput(final_attrs,
                                check_test=lambda value: value in str_values)
             option_value = force_text(item.pk)

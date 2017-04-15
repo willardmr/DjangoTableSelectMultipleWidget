@@ -15,10 +15,19 @@ items = forms.ModelMultipleChoiceField(
         item_attrs=[
             'tablecolumn1',
             ('tablecolumn2', "Table coulumn 2 header"),
-        ]))
+        ],
+        enable_shift_select=True,
+        ))
 ```
         
 Render it normally with a Django form.
+
+### Parameters
+
+#### `enable_shift_select`
+Default: `False`
+
+If `True`, it inserts JavaScripts, that enables shift-selection of multiple checkboxes. JQuery is required to be activated for this feature.
 
 
 Recommended Datatables Javascript to disallow sorting on the checkbox column:
