@@ -35,7 +35,8 @@ from setuptools import find_packages, setup
 # Make sure the django.mo file also exists:
 try:
     os.chdir('table_select_widget')
-    from django.core.management.commands.compilemessages import compile_messages
+    from django.core.management.commands.compilemessages import \
+        compile_messages
     compile_messages(sys.stderr)
 except ImportError:
     pass

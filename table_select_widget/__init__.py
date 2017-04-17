@@ -1,10 +1,9 @@
 from string import capwords
-from django.forms import CheckboxInput, SelectMultiple, Select
+
+from django.forms import CheckboxInput, SelectMultiple
 from django.utils.encoding import force_text
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
-from datetime import datetime
-from django.utils import timezone
 
 
 SHIFT_SELECT_JS = '''
@@ -35,11 +34,13 @@ $.fn.shiftClick = function () {
 $('.selectable-checkbox').shiftClick();
 '''
 
+# Note: Paging cannot be easily turned on,
+# because otherwise the checkboxes on unvisible pages are not in the request.
 DATATABLES_JS = '''
 $(document).ready(function(){
     $('#paing_for').DataTable({
         "order": [],
-        "paging": false, // Paging cannot be easily turned on, because otherwise the checkboxes on unvisible pages are not in the request.
+        "paging": false,
         "searching": false,
         "columnDefs": [{
             "targets"  : 'no-sort',
@@ -57,7 +58,15 @@ class TableSelectMultiple(SelectMultiple):
     checkbox.
     Only for use with a ModelMultipleChoiceField
     """
-    def __init__(self, item_attrs, enable_shift_select=False, enable_datatables=False, bootstrap_style=False, *args, **kwargs):
+    def __init__(
+        self,
+        item_attrs,
+        enable_shift_select=False,
+        enable_datatables=False,
+        bootstrap_style=False,
+        *args,
+        **kwargs,
+    ):
         """
         item_attrs
             Defines the attributes of each item which will be displayed
@@ -85,7 +94,9 @@ class TableSelectMultiple(SelectMultiple):
         table_classes = "display"
         if self.bootstrap_style:
             table_classes += " table table-sm table-bordered"
-        output.append('<table id={} class="{}">'.format(escape(name), table_classes))
+        output.append(
+            '<table id={} class="{}">'.format(escape(name), table_classes),
+        )
         head = self.render_head()
         output.append(head)
         body = self.render_body(name, value, attrs)
@@ -104,7 +115,9 @@ class TableSelectMultiple(SelectMultiple):
         output.append('<thead><tr><th class="no-sort"></th>')
         for item in self.item_attrs:
             name = item if isinstance(item, str) else item[1]
-            output.append('<th>{}</th>'.format(clean_underscores(escape(name))))
+            output.append(
+                '<th>{}</th>'.format(clean_underscores(escape(name))),
+            )
         output.append('</tr></thead>')
         return ''.join(output)
 
@@ -117,18 +130,23 @@ class TableSelectMultiple(SelectMultiple):
             final_attrs['class'] += " form-check-input"
         str_values = set([force_text(v) for v in value])
         choice_pks = [pk for (pk, item) in self.choices]
-        for i, item in enumerate(self.choices.queryset.filter(pk__in=choice_pks)):
+        choices = self.choices.queryset.filter(pk__in=choice_pks)
+        for i, item in enumerate(choices):
             # If an ID attribute was given, add a numeric index as a suffix,
             # so that the checkboxes don't all have the same ID attribute.
             if has_id:
-                final_attrs = dict(final_attrs, id='{}_{}'.format(attrs['id'], i))
+                final_attrs = dict(
+                    final_attrs, id='{}_{}'.format(attrs['id'], i),
+                )
             cb = CheckboxInput(final_attrs,
                                check_test=lambda value: value in str_values)
             option_value = force_text(item.pk)
             rendered_cb = cb.render(name, option_value)
             output.append('<tr><td>{}</td>'.format(rendered_cb))
             for item_attr in self.item_attrs:
-                attr = item_attr if isinstance(item_attr, str) else item_attr[0]
+                attr = item_attr \
+                    if isinstance(item_attr, str) \
+                    else item_attr[0]
                 content = get_underscore_attrs(attr, item)
                 output.append('<td>{}</td>'.format(escape(content)))
             output.append('</tr>')
@@ -147,7 +165,8 @@ def get_underscore_attrs(attrs, item):
     if item is None:
         return ""
     return item
-        
+
+
 def clean_underscores(string):
     """
     Helper function to clean up table headers.  Replaces underscores

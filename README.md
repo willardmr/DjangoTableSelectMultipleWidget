@@ -10,17 +10,20 @@ pip install django-table-select-widget
 Example form field:
 ```python
 from table_select_widget import TableSelectMultiple
+
 items = forms.ModelMultipleChoiceField(
-        queryset=myqueryset, widget=widgets.TableSelectMultiple(
-        item_attrs=[
-            'tablecolumn1',
-            ('tablecolumn2', "Table coulumn 2 header"),
-            'same__related__parameter',
-        ],
-        enable_shift_select=True,
-        enable_datatables=True,
-        bootstrap_style=True,
-        ))
+    queryset=myqueryset,
+    widget=TableSelectMultiple(
+       item_attrs=[
+           'tablecolumn1',
+           ('tablecolumn2', "Table coulmn 2 header"),
+           'same__related__parameter',
+       ],
+       enable_shift_select=True,
+       enable_datatables=True,
+       bootstrap_style=True,
+    ),
+)
 ```
         
 Render it normally with a Django form.
