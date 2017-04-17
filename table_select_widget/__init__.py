@@ -37,17 +37,17 @@ $('.selectable-checkbox').shiftClick();
 # Note: Paging cannot be easily turned on,
 # because otherwise the checkboxes on unvisible pages are not in the request.
 DATATABLES_JS = '''
-$(document).ready(function(){
-    $('#paing_for').DataTable({
+$(document).ready(function(){{
+    $('#{}').DataTable({{
         "order": [],
         "paging": false,
         "searching": false,
-        "columnDefs": [{
+        "columnDefs": [{{
             "targets"  : 'no-sort',
             "orderable" : false,
-        }]
-    });
-});
+        }}]
+    }});
+}});
 '''
 
 
@@ -65,7 +65,7 @@ class TableSelectMultiple(SelectMultiple):
         enable_datatables=False,
         bootstrap_style=False,
         *args,
-        **kwargs,
+        **kwargs
     ):
         """
         item_attrs
@@ -106,7 +106,7 @@ class TableSelectMultiple(SelectMultiple):
         if self.enable_shift_select:
             output.append(SHIFT_SELECT_JS)
         if self.enable_datatables:
-            output.append(DATATABLES_JS)
+            output.append(DATATABLES_JS.format(escape(name)))
         output.append('</script>')
         return mark_safe('\n'.join(output))
 
@@ -122,7 +122,7 @@ class TableSelectMultiple(SelectMultiple):
         return ''.join(output)
 
     def render_body(self, name, value, attrs):
-        output = []
+        output = ['<tbody>']
         has_id = attrs and 'id' in attrs
         final_attrs = self.build_attrs(attrs, name=name)
         final_attrs['class'] = "tableselectmultiple selectable-checkbox"
