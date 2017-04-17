@@ -124,7 +124,7 @@ class TableSelectMultiple(SelectMultiple):
     def render_body(self, name, value, attrs):
         output = ['<tbody>']
         has_id = attrs and 'id' in attrs
-        final_attrs = self.build_attrs(attrs, name=name)
+        final_attrs = self.build_attrs(attrs)
         final_attrs['class'] = "tableselectmultiple selectable-checkbox"
         if self.bootstrap_style:
             final_attrs['class'] += " form-check-input"
