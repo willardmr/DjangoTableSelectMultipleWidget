@@ -20,7 +20,7 @@ $.fn.shiftClick = function () {
                 var chk = lastSelected.checked;
                 for (var i = start; i <= end; i++) {
                     checkBoxes[i].checked = chk;
-                    $(checkBoxes[i].closest("tr")).toggleClass('active', chk);
+                    $(checkBoxes[i]).closest("tr").toggleClass('active', chk);
                 }
             } else {
                 lastSelected = this;
