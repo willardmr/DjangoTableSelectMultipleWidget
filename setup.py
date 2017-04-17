@@ -58,7 +58,7 @@ def read(fname):
 
 setup(
     name="django-table-select-widget",
-    version="0.0.2",
+    version="1.0.0",
     description=read('DESCRIPTION'),
     long_description=read('README.rst'),
     platforms=['OS Independent'],
