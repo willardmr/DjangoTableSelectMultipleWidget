@@ -15,6 +15,7 @@ items = forms.ModelMultipleChoiceField(
         item_attrs=[
             'tablecolumn1',
             ('tablecolumn2', "Table coulumn 2 header"),
+            'same__related__parameter',
         ],
         enable_shift_select=True,
         enable_datatables=True,

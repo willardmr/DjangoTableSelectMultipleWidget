@@ -129,16 +129,24 @@ class TableSelectMultiple(SelectMultiple):
             output.append('<tr><td>{}</td>'.format(rendered_cb))
             for item_attr in self.item_attrs:
                 attr = item_attr if isinstance(item_attr, str) else item_attr[0]
-                if callable(attr):
-                    content = attr(item)
-                elif callable(getattr(item, attr)):
-                    content = getattr(item, attr)()
-                else:
-                    content = getattr(item, attr)
+                content = get_underscore_attrs(attr, item)
                 output.append('<td>{}</td>'.format(escape(content)))
             output.append('</tr>')
         output.append('</tbody>')
         return ''.join(output)
+
+
+def get_underscore_attrs(attrs, item):
+    for attr in attrs.split('__'):
+        if callable(attr):
+            item = attr(item)
+        elif callable(getattr(item, attr)):
+            item = getattr(item, attr)()
+        else:
+            item = getattr(item, attr)
+    if item is None:
+        return ""
+    return item
         
 def clean_underscores(string):
     """
