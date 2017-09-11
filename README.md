@@ -24,6 +24,7 @@ items = forms.ModelMultipleChoiceField(
        enable_shift_select=True,
        enable_datatables=True,
        bootstrap_style=True,
+       datatable_options={'language': {'url': '/foobar.js'}},
     ),
 )
 ```
@@ -51,6 +52,14 @@ If `True`, it inserts JavaScripts, that enables DataTables for the select table.
 Default: `False`
 
 If `True`, it inserts BootStrap classes to the table.
+
+#### `datatable_options`
+Default: `{}`
+
+Dictionary with additional parameters which will be passed to DataTable initialization.
+These options will get formated by `json.dumps`, so it can contain more complex structures.
+Default parameter values set by `DjangoTableSelectMultipleWidget` can be overriden by this parameter.
+
 
 ## Origin
 

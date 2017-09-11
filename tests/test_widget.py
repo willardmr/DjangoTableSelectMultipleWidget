@@ -88,6 +88,22 @@ class TestTableSelectWidget(TestCase):
         render = ChoiceForm().as_p()
         self.assertTrue("$('#choice_field').DataTable({" in render)
 
+    def test_widget_datatables_options(self):
+        """ Test setting additional options """
+        class ChoiceForm(forms.Form):
+            choice_field = forms.ModelMultipleChoiceField(
+                queryset=Choice.objects.all(),
+                widget=TableSelectMultiple(
+                    item_attrs=['name'],
+                    enable_datatables=True,
+                    datatable_options={
+                        'language': {'url': 'foo.js'},
+                    },
+                ),
+            )
+        render = ChoiceForm().as_p()
+        self.assertTrue('"language": {"url": "foo.js"}' in render)
+
     def test_widget_bootstrap(self):
         class ChoiceForm(forms.Form):
             choice_field = forms.ModelMultipleChoiceField(
