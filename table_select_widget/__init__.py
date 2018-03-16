@@ -1,3 +1,5 @@
+import json
+
 from string import capwords
 
 from django.forms import CheckboxInput, SelectMultiple
@@ -34,22 +36,6 @@ $.fn.shiftClick = function () {
 $('.selectable-checkbox').shiftClick();
 '''
 
-# Note: Paging cannot be easily turned on,
-# because otherwise the checkboxes on unvisible pages are not in the request.
-DATATABLES_JS = '''
-$(document).ready(function(){{
-    $('#{}').DataTable({{
-        "order": [],
-        "paging": false,
-        "searching": false,
-        "columnDefs": [{{
-            "targets"  : 'no-sort',
-            "orderable" : false,
-        }}]
-    }});
-}});
-'''
-
 
 class TableSelectMultiple(SelectMultiple):
     """
@@ -64,6 +50,7 @@ class TableSelectMultiple(SelectMultiple):
         enable_shift_select=False,
         enable_datatables=False,
         bootstrap_style=False,
+        datatable_options={},
         *args,
         **kwargs
     ):
@@ -85,6 +72,25 @@ class TableSelectMultiple(SelectMultiple):
         self.enable_shift_select = enable_shift_select
         self.enable_datatables = enable_datatables
         self.bootstrap_style = bootstrap_style
+        self.datatable_options = datatable_options
+
+    def _datatable_javascript(self, name):
+        # Note: Paging cannot be easily turned on, because otherwise
+        # the checkboxes on unvisible pages are not in the request.
+        datatable_options = {
+            "order": [],
+            "paging": False,
+            "searching": False,
+            "columnDefs": [
+                {
+                    "targets": 'no-sort',
+                    "orderable": False,
+                },
+            ],
+        }
+        datatable_options.update(self.datatable_options)
+        js = "$(document).ready(function(){{$('#{}').DataTable({}); }});"
+        return js.format(escape(name), json.dumps(datatable_options))
 
     def render(self, name, value,
                attrs=None, choices=()):
@@ -106,7 +112,8 @@ class TableSelectMultiple(SelectMultiple):
         if self.enable_shift_select:
             output.append(SHIFT_SELECT_JS)
         if self.enable_datatables:
-            output.append(DATATABLES_JS.format(escape(name)))
+            output.append(self._datatable_javascript(name))
+
         output.append('</script>')
         return mark_safe('\n'.join(output))
 
