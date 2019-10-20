@@ -93,7 +93,7 @@ class TableSelectMultiple(SelectMultiple):
         return js.format(escape(name), json.dumps(datatable_options))
 
     def render(self, name, value,
-               attrs=None, choices=()):
+               attrs=None, choices=(), **kwargs):
         if value is None:
             value = []
         output = []
@@ -105,7 +105,7 @@ class TableSelectMultiple(SelectMultiple):
         )
         head = self.render_head()
         output.append(head)
-        body = self.render_body(name, value, attrs)
+        body = self.render_body(name, value, attrs, **kwargs)
         output.append(body)
         output.append('</table>')
         output.append('<script>')
@@ -128,7 +128,7 @@ class TableSelectMultiple(SelectMultiple):
         output.append('</tr></thead>')
         return ''.join(output)
 
-    def render_body(self, name, value, attrs):
+    def render_body(self, name, value, attrs, **kwargs):
         output = ['<tbody>']
         has_id = attrs and 'id' in attrs
         final_attrs = self.build_attrs(attrs)
@@ -148,7 +148,7 @@ class TableSelectMultiple(SelectMultiple):
             cb = CheckboxInput(final_attrs,
                                check_test=lambda value: value in str_values)
             option_value = force_text(item.pk)
-            rendered_cb = cb.render(name, option_value)
+            rendered_cb = cb.render(name, option_value, **kwargs)
             output.append('<tr><td>{}</td>'.format(rendered_cb))
             for item_attr in self.item_attrs:
                 attr = item_attr \
